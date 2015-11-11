@@ -1,0 +1,191 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".NavigationActivity" >
+
+
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/bSearch"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+
+        <Button
+            android:id="@+id/bSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Search"
+            android:layout_alignParentTop="true"
+            android:focusableInTouchMode="false" />
+
+
+        <AutoCompleteTextView
+            android:id="@+id/et_location"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/bSearch"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/bNavigation"
+            android:gravity="center_horizontal"
+            android:ems="10"
+            android:hint="@string/hnt_et_location"
+            android:inputType="text"   />
+
+        <Button
+            android:id="@+id/bNavigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/bSearch"
+            android:layout_alignParentLeft="true"
+            android:text="Navigation"/>
+
+
+        <LinearLayout
+            android:id="@+id/linear1"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            >
+            <android.support.v4.view.ViewPager
+                android:id="@+id/bottomButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/showListButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Result List"
+            android:background="#CC9999"
+            android:layout_alignParentBottom="true">
+        </Button>
+
+        <LinearLayout
+            android:id="@+id/showClusterListButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="#CC9999"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/showClusterListButtontext1"
+                android:text="hello"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:padding="2dp"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/showClusterListButtontext2"
+                android:text="hello"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:padding="2dp"
+                android:gravity="center_horizontal"
+                />
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+        <FrameLayout
+            android:id="@+id/summaryView"
+            android:layout_below="@+id/bSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/Category_Container"
+            android:layout_below="@+id/bSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp">
+        </FrameLayout>
+
+
+
+
+        <FrameLayout
+            android:id="@+id/Category_result_Container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/bSearch"
+            >
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/CourseSchedule_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/bSearch"
+            >
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/CourseHistory_container"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_height="fill_parent"
+            >
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/Cluster_result_Container"
+            android:layout_below="@+id/bSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        </FrameLayout>
+
+
+
+        <requestFocus />
+
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list_slidermenu"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_selector"
+        android:background="@color/list_background"/>
+</android.support.v4.widget.DrawerLayout>
