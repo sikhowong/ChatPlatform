@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+
+
+    <Button
+        android:id="@+id/hideView"
+        android:layout_width="fill_parent"
+        android:background="#00000000"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Course Schedule"
+        android:id="@+id/textView6"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Course History"
+        android:id="@+id/course_history"
+        android:textSize="15sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/textView6" />
+    <ExpandableListView
+        android:id="@+id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/course_history">
+
+    </ExpandableListView>
+    </RelativeLayout>
+
+</LinearLayout>
