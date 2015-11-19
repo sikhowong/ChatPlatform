@@ -23,13 +23,15 @@ import android.widget.TabHost;
 
 import com.example.ruidong.sbu_application.R;
 import com.example.ruidong.sbu_application.framework.NavigationActivity;
+import com.example.ruidong.sbu_application.framework.common.tool.FragmentIdPair;
+
 /**
  * Created by MasterAl on 11/7/2015.
  */
 public class ChatMainFragment extends Fragment {
     // Fragment TabHost as mTabHost
     private FragmentTabHost mTabHost;
-
+    Fragment MenuFragment = NavigationActivity.MenuFragment;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -74,7 +76,22 @@ public class ChatMainFragment extends Fragment {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.miCompose:
-               // composeMessage();
+                if(MenuFragment != null){
+                    FragmentTransaction tran7 = getActivity().getSupportFragmentManager().beginTransaction().remove(MenuFragment);
+                    tran7.commit();
+                }
+                if(!NavigationActivity.backButtonStack.isEmpty()){
+                    FragmentTransaction tran = getActivity().getSupportFragmentManager().beginTransaction().remove(NavigationActivity.backButtonStack.peek().getFragment());
+                    tran.commit();
+                }
+                NewPostFragment newPostFragment = new NewPostFragment();
+                MenuFragment = newPostFragment;
+                FragmentTransaction new_post_tran = getActivity().getSupportFragmentManager().beginTransaction().add(R.id.CourseHistory_container,MenuFragment);
+                FragmentIdPair newPostPair= new FragmentIdPair(MenuFragment,R.id.CourseHistory_container,1);
+                NavigationActivity.backButtonStack.push(newPostPair);
+
+                new_post_tran.commit();
+
                 return true;
 
             default:
