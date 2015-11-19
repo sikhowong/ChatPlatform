@@ -18,7 +18,7 @@ public class MyStuffTab extends Fragment  {
         // Inflate the layout for this fragment
         View V = inflater.inflate(R.layout.fragment_my_stuff, container, false);
         String[] mobileArray = {"These are my post let's check it out !!!!!!!!!!!! ! !!!  !!!!! haha","More of my post , these are great, look at my likes ","Who trynna get lunch?","Blackberry","These are my post let's check it out !!!!!!!!!!!! ! !!!  !!!!! haha","More of my post , these are great, look at my likes ","Who trynna get lunch?","Blackberry","These are my post let's check it out !!!!!!!!!!!! ! !!!  !!!!! haha","More of my post , these are great, look at my likes ","Who trynna get lunch?","Blackberry","WebOS","Ubuntu","Windows7","Max OS X"};
-        PopularPostCustomListAdapter adapter = new PopularPostCustomListAdapter(getActivity(), mobileArray);
+        RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), mobileArray);
         ListView listView = (ListView) V.findViewById(R.id.listView);
         listView.setAdapter(adapter);
         return V;
