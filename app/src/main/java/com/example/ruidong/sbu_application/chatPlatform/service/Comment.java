@@ -6,9 +6,10 @@ import android.net.wifi.WifiManager;
 import java.util.Date;
 
 /**
- * Created by Albert on 11/18/15.
+ * Created by shw on 12/11/2015.
  */
-public class Post {
+public class Comment {
+
 
     private int postID;
     private String userID;
@@ -16,7 +17,7 @@ public class Post {
     private String content;
     private int likes;
 
-    public Post(String c , int l){
+    public Comment(String c , int l){
         dateCreated = new Date();
         content = c;
         likes = l;
@@ -62,13 +63,15 @@ public class Post {
         this.userID = userID;
     }
 
-    public String getMacAddress(Context context) {
+  /*  public String getMacAddress(Context context) {
         WifiManager wimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         String macAddress = wimanager.getConnectionInfo().getMacAddress();
         if (macAddress == null) {
             macAddress = "Device don't have mac address or wi-fi is disabled";
         }
         return macAddress;
-    }
+    }*/
+
+
 
 }

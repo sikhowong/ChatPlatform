@@ -84,4 +84,9 @@ public class PopularPostCustomListAdapter extends ArrayAdapter<Post> {
         holder.displayLikes.setText("Likes: " + posts.get(position).getLikes());
         return rowView;
     }
+    public Post getItem(int position){
+
+        return posts.get(position);
+    }
 }
+
