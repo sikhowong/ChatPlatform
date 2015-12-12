@@ -24,6 +24,22 @@ import java.util.ArrayList;
 
 public class MyStuffTab extends Fragment  {
     Fragment MenuFragment = NavigationActivity.MenuFragment;
+
+    /**
+     * This is the overriden method for the My Stuff Tab Fragment class used to create
+     * the text views as well as paste exactly what it will contain. The purpose of this
+     * method in future will consist of the posts information, the number
+     * of likes it contains, and how many replys it has as well. The reply number
+     * will be added in future tests.
+     *
+     * Json formatting will also be done towards the bottom of the method. This will be
+     * used to send the data to the database, and if we want to parse it for reloading,
+     * we will have the JSON file formatted data to do so
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,7 +78,16 @@ public class MyStuffTab extends Fragment  {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-
+            /**
+             * Also contains an onItemClick listener used to add an action
+             * to when the post is clicked. Currently it shows the specific post
+             * that we click, however, what is meant to happen, is open up all
+             * the comments and replies that are associated with that post.
+             * @param parent
+             * @param v
+             * @param position
+             * @param id
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 

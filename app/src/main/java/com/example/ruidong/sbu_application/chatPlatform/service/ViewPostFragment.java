@@ -23,6 +23,10 @@ import java.util.ArrayList;
 
 import static com.example.ruidong.sbu_application.R.layout.recent_post_listview;
 
+/**
+ * Created by Albert and Sikho Wong on 11/11/2015.
+ */
+
 
 public class ViewPostFragment extends Fragment {
     Post post;
@@ -30,7 +34,10 @@ public class ViewPostFragment extends Fragment {
 
     }
 
-
+    /**
+     * This method is called to do initial creation of the fragment.
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -38,6 +45,22 @@ public class ViewPostFragment extends Fragment {
 
     }
 
+    /**
+     *
+     * @param inflater
+     * @param containter
+     * @param savedInstanceState
+     * @return
+     * This is the overriden method for the View post Fragment class used to create the text
+     * views as well as paste exactly what it will contain. The purpose of this
+     * method in future will consist of the posts information, the number
+     * of likes it contains, and how many replys it has as well. The reply number
+     * will be added in future tests.
+     *
+     * Json formatting will also be done towards the bottom of the method. This will be
+     * used to send the data to the database, and if we want to parse it for reloading,
+     * we will have the JSON file formatted data to do so
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup containter, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -94,6 +117,12 @@ public class ViewPostFragment extends Fragment {
 
         return rootView;
     }
+
+    /**
+     *
+     * @param p
+     * Simple mutator method used to set the post
+     */
     public void setPost(Post p){
         post = p;
     }
