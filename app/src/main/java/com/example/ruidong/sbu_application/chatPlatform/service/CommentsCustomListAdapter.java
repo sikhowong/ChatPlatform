@@ -8,32 +8,33 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ruidong.sbu_application.R;
 
 import java.util.ArrayList;
 
 /**
- * Created by shw on 11/11/2015.
+ * Created by shw on 12/11/2015.
  */
-public class RecentPostCustomListAdapter extends ArrayAdapter<Post> {
+public class CommentsCustomListAdapter extends ArrayAdapter<Comment> {
+
     private Activity activity;
-    private ArrayList<Post> posts;
-   // private final String[] web;
+    //private final String[] web;
+    private ArrayList<Comment> comments;
     private static LayoutInflater inflater = null;
-    public RecentPostCustomListAdapter(Activity activity, ArrayList<Post> posts) {
-        super(activity, R.layout.recent_post_listview, posts);
+
+
+    public CommentsCustomListAdapter(Activity activity, int textViewResourceId, ArrayList<Comment> comments) {
+        super(activity, R.layout.recent_post_listview, comments);
         try {
             this.activity = activity;
-            this.posts = posts;
+            this.comments = comments;
 
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         } catch (Exception e) {
 
         }
-
 
     }
 
@@ -42,7 +43,6 @@ public class RecentPostCustomListAdapter extends ArrayAdapter<Post> {
         public TextView displayNumber;
         public TextView displayLikes;
     }
-
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
@@ -59,17 +59,33 @@ public class RecentPostCustomListAdapter extends ArrayAdapter<Post> {
         iv.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Toast.makeText(activity, "You Clicked at " + p, Toast.LENGTH_SHORT).show();
-                posts.get(p).setLikes(posts.get(p).getLikes()+1);
+
+                comments.get(p).setLikes(comments.get(p).getLikes()+1);
 
             }
         });
 
-        holder.displayName.setText(posts.get(position).getContent());
-        holder.displayNumber.setText(posts.get(position).getDateCreated().toString());
-        holder.displayLikes.setText("Likes: " + posts.get(position).getLikes());
+//        LayoutInflater inflater = context.getLayoutInflater();
+//        View rowView = inflater.inflate(R.layout.recent_post_listview, null, true);
+//        TextView txtTitle = (TextView) rowView.findViewById(R.id.textView1);
+//        TextView txtTitle2 = (TextView) rowView.findViewById(R.id.textView2);
+//        ImageView iv = (ImageView) rowView.findViewById(R.id.imageView2);
+//        final int p = position;
+//        iv.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Toast.makeText(context, "You Clicked at " + p, Toast.LENGTH_SHORT).show();
+//
+//
+//            }
+//        });
+        holder.displayName.setText(comments.get(position).getContent());
+        holder.displayNumber.setText(comments.get(position).getDateCreated().toString());
+        holder.displayLikes.setText("Likes: " + comments.get(position).getLikes());
         return rowView;
     }
+    /*
     public Post getItem(int position){
+
         return posts.get(position);
-    }
+    }*/
 }
