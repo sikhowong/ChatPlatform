@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+
 import android.widget.ListView;
 import android.widget.TabHost;
 
@@ -25,6 +27,9 @@ import com.example.ruidong.sbu_application.R;
 import com.example.ruidong.sbu_application.framework.NavigationActivity;
 import com.example.ruidong.sbu_application.framework.common.tool.FragmentIdPair;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
+
 /**
  * Created by MasterAl on 11/7/2015.
  */
@@ -32,6 +37,12 @@ public class ChatMainFragment extends Fragment {
     // Fragment TabHost as mTabHost
     private FragmentTabHost mTabHost;
     Fragment MenuFragment = NavigationActivity.MenuFragment;
+
+    public static ArrayList<Post> postList = new ArrayList<Post>();
+    public static Hashtable<String,ArrayList<Comment>> commentHashTable = new Hashtable<>();
+
+    //public static ObservableArrayList<Post> postList = new ObservableArrayList<Post>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 

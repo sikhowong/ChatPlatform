@@ -70,7 +70,10 @@ public class PopularPostsTab extends Fragment {
         }
 
 
-        final PopularPostCustomListAdapter adapter = new PopularPostCustomListAdapter(getActivity(), recent_post_listview, posts);
+        //final PopularPostCustomListAdapter adapter = new PopularPostCustomListAdapter(getActivity(), recent_post_listview, posts);
+        //remove
+        final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), ChatMainFragment.postList);
+
         ListView listView = (ListView) V.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 

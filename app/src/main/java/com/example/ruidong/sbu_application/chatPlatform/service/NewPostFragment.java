@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ruidong.sbu_application.R;
@@ -31,11 +32,16 @@ public class NewPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup containter, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_new_post, containter, false);
+        final EditText et = (EditText)rootView.findViewById(R.id.editText);
+
         Button button = (Button)rootView.findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Submitting Post", Toast.LENGTH_SHORT).show();
+                String content = et.getText().toString();
+                ChatMainFragment.postList.add(new Post(content, 0));
+
+                Toast.makeText(getActivity(), "Post Submitted", Toast.LENGTH_SHORT).show();
             }
 
         });

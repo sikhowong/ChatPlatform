@@ -56,7 +56,10 @@ public class MyStuffTab extends Fragment  {
         //ORIGINAL
         //final MyStuffCustomListAdapter adapter = new MyStuffCustomListAdapter(getActivity(), mobileArray);
         //TEMP
-        final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), posts);
+
+        //final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), posts);
+        //remove
+        final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), ChatMainFragment.postList);
         ListView listView = (ListView) V.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 

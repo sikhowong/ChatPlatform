@@ -61,7 +61,7 @@ public class CommentsCustomListAdapter extends ArrayAdapter<Comment> {
                 // Toast.makeText(activity, "You Clicked at " + p, Toast.LENGTH_SHORT).show();
 
                 comments.get(p).setLikes(comments.get(p).getLikes()+1);
-
+                reload();
             }
         });
 
@@ -82,6 +82,9 @@ public class CommentsCustomListAdapter extends ArrayAdapter<Comment> {
         holder.displayNumber.setText(comments.get(position).getDateCreated().toString());
         holder.displayLikes.setText("Likes: " + comments.get(position).getLikes());
         return rowView;
+    }
+    public void reload(){
+        this.notifyDataSetChanged();
     }
     /*
     public Post getItem(int position){

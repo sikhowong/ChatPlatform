@@ -1,6 +1,8 @@
 package com.example.ruidong.sbu_application.chatPlatform.service;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,11 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ruidong.sbu_application.R;
+import com.example.ruidong.sbu_application.framework.NavigationActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +30,8 @@ import static com.example.ruidong.sbu_application.R.layout.recent_post_listview;
 
 public class ViewPostFragment extends Fragment {
     Post post;
+    EditText inputComment ;
+
     public ViewPostFragment(){
 
     }
@@ -41,7 +47,7 @@ public class ViewPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup containter, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View rootView = inflater.inflate(R.layout.fragment_view_post, containter, false);
+        final View rootView = inflater.inflate(R.layout.fragment_view_post, containter, false);
         TextView tv1 = (TextView)rootView.findViewById(R.id.textView7);
         TextView tv2 = (TextView)rootView.findViewById(R.id.textView8);
         TextView tv3 = (TextView)rootView.findViewById(R.id.textViewNum);
@@ -49,6 +55,47 @@ public class ViewPostFragment extends Fragment {
         tv2.setText(post.getDateCreated().toString() + " " + post.getMacAddress(getActivity()));
         tv3.setText(post.getLikes()+"");
 
+
+        Button submitCommentBtn = (Button)rootView.findViewById(R.id.button3);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder((NavigationActivity)getActivity());
+        builder.setTitle("Submit comment");
+        inputComment = new EditText((NavigationActivity)getActivity());
+        builder.setView(inputComment);
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String txt = inputComment.getText().toString();
+                Comment c = new Comment(txt , 0);
+                if (ChatMainFragment.commentHashTable.containsKey(post.getContent())){
+                    ChatMainFragment.commentHashTable.get(post.getContent()).add(c);
+                }else{
+                    ChatMainFragment.commentHashTable.put(post.getContent(), new ArrayList<Comment>());
+                    ChatMainFragment.commentHashTable.get(post.getContent()).add(c);
+                }
+                reload(rootView);
+
+
+
+
+                Toast.makeText(getActivity(), txt, Toast.LENGTH_LONG).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+                dialog.dismiss();
+            }
+        });
+
+        final AlertDialog ad = builder.create();
+
+        submitCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ad.show();
+            }
+        });
 
         //Button button = (Button)rootView.findViewById(R.id.button2);
         /*button.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +106,8 @@ public class ViewPostFragment extends Fragment {
 
         });
         */
-        ArrayList<Comment> comments = new ArrayList<>();
 
+        ArrayList<Comment> comments = new ArrayList<>();
 
         try {
             JSONArray jsonArray = new JSONArray();
@@ -84,16 +131,26 @@ public class ViewPostFragment extends Fragment {
         }
 
 
+        // new for showing
+        reload(rootView);
 
-
-        final CommentsCustomListAdapter adapter = new CommentsCustomListAdapter(getActivity(), recent_post_listview, comments);
-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        listView.setAdapter(adapter);
 
 
 
         return rootView;
     }
+    public void reload(View rootView){
+        ArrayList<Comment> comments = new ArrayList<>();
+        comments = ChatMainFragment.commentHashTable.get(post.getContent());
+        if(comments != null){
+            final CommentsCustomListAdapter adapter = new CommentsCustomListAdapter(getActivity(), recent_post_listview, comments);
+            ListView listView = (ListView) rootView.findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+
+        }
+    }
+
+
     public void setPost(Post p){
         post = p;
     }

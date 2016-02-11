@@ -69,8 +69,8 @@ public class RecentPostsTab extends Fragment  {
             posts[i].setContent("" + i);
         }
 */
-        final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), posts);
-
+       // final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), posts);
+        final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), ChatMainFragment.postList);
         ListView listView = (ListView) V.findViewById(R.id.listView);
         //ArrayAdapter<Post> adapter = new ArrayAdapter<Post>(getActivity(), R.layout.recent_post_listview, posts);
         //View V2 = inflater.inflate(R.layout.recent_post_listview, container, false);

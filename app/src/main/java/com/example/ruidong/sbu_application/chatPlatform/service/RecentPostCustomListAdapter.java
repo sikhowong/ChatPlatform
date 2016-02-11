@@ -60,6 +60,7 @@ public class RecentPostCustomListAdapter extends ArrayAdapter<Post> {
             public void onClick(View v) {
                 // Toast.makeText(activity, "You Clicked at " + p, Toast.LENGTH_SHORT).show();
                 posts.get(p).setLikes(posts.get(p).getLikes()+1);
+                reload();
 
             }
         });
@@ -69,6 +70,11 @@ public class RecentPostCustomListAdapter extends ArrayAdapter<Post> {
         holder.displayLikes.setText("Likes: " + posts.get(position).getLikes());
         return rowView;
     }
+
+    public void reload(){
+        this.notifyDataSetChanged();
+    }
+
     public Post getItem(int position){
         return posts.get(position);
     }
