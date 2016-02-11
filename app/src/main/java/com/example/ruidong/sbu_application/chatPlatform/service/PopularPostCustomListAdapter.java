@@ -15,8 +15,12 @@ import com.example.ruidong.sbu_application.R;
 import java.util.ArrayList;
 import java.util.Observable;
 
-/**
- * Created by shw on 11/17/2015.
+/**This class, is a custom list adapter for Popular posts. It extends
+ * ArrayAdapter of type posts because it will be stored in the
+ * ArrayAdapter, and we want to inherit its methods. It will store
+ * specifcally posts into the Array Adapter
+ *
+ * Created by Albert and Sikho Wong on 11/11/2015.
  */
 public class PopularPostCustomListAdapter extends ArrayAdapter<Post> {
     private Activity activity;
@@ -24,7 +28,12 @@ public class PopularPostCustomListAdapter extends ArrayAdapter<Post> {
     private ArrayList<Post> posts;
     private static LayoutInflater inflater = null;
 
-
+    /**
+     * Default construtor used to set the Popular post adapters activity and posts
+     * @param activity
+     * @param textViewResourceId
+     * @param posts
+     */
     public PopularPostCustomListAdapter(Activity activity, int textViewResourceId, ArrayList<Post> posts) {
         super(activity, R.layout.recent_post_listview, posts);
         try {
@@ -38,13 +47,30 @@ public class PopularPostCustomListAdapter extends ArrayAdapter<Post> {
         }
 
     }
-
+    /**
+     * Static class used within the class, containts text views for the
+     * display name, display number, and display likes. Will assist
+     * with the getView method
+     */
     public static class ViewHolder {
         public TextView displayName;
         public TextView displayNumber;
         public TextView displayLikes;
     }
 
+    /**
+     * Overriden methoud used to get the exact view in the popular list adapter.
+     * It also sets the position, likes, number and position of the post inside the
+     * list.
+     *
+     * There is also a method inside this method that represents an onClick listener.
+     * When a post is clicked, or the heart is clicked, it will increase the number of likes
+     * by 1.
+     * @param position
+     * @param view
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
@@ -84,6 +110,13 @@ public class PopularPostCustomListAdapter extends ArrayAdapter<Post> {
         holder.displayLikes.setText("Likes: " + posts.get(position).getLikes());
         return rowView;
     }
+
+    /**
+     * Simple method used to get the specific Item we want based on the position
+     * in the list. returns it from the posts data structure.
+     * @param position
+     * @return
+     */
     public Post getItem(int position){
 
         return posts.get(position);

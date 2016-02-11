@@ -14,7 +14,13 @@ import com.example.ruidong.sbu_application.R;
 import java.util.ArrayList;
 
 /**
- * Created by shw on 12/11/2015.
+ * /**This class, is a custom list adapter for the Comments. It extends
+ * ArrayAdapter of type posts because it will be stored in the
+ * ArrayAdapter, and we want to inherit its methods. It will store
+ * specifcally COMMENTSs into the Array Adapter
+ *
+ *
+ * Created by Albert Ibragimov and Sikho Wong on 12/11/2015.
  */
 public class CommentsCustomListAdapter extends ArrayAdapter<Comment> {
 
@@ -23,7 +29,12 @@ public class CommentsCustomListAdapter extends ArrayAdapter<Comment> {
     private ArrayList<Comment> comments;
     private static LayoutInflater inflater = null;
 
-
+    /**
+     * Default construtor used to set the comment adapters activity and posts
+     * @param activity
+     * @param textViewResourceId
+     * @param comments
+     */
     public CommentsCustomListAdapter(Activity activity, int textViewResourceId, ArrayList<Comment> comments) {
         super(activity, R.layout.recent_post_listview, comments);
         try {
@@ -38,12 +49,30 @@ public class CommentsCustomListAdapter extends ArrayAdapter<Comment> {
 
     }
 
+    /**
+     * Static class used within the class, containts text views for the
+     * display name, display number, and display likes. Will assist
+     * with the getView method
+     */
     public static class ViewHolder {
         public TextView displayName;
         public TextView displayNumber;
         public TextView displayLikes;
     }
 
+    /**
+     * Overriden methoud used to get the exact view in the COMMENTS adapter.
+     * It also sets the position, likes, number and position of the post inside the
+     * list.
+     *
+     * There is also a method inside this method that represents an onClick listener.
+     * When a post is clicked, or the heart is clicked, it will increase the number of likes
+     * by 1.
+     * @param position
+     * @param view
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 

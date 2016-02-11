@@ -24,8 +24,34 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Albert and Sikho Wong on 11/11/2015.
+ * This the class that represents all of the data that will
+ * be going into the Recent Posts Tab. This class extends
+ * Fragment as we will be using a Fragment to generate
+ * the Interface.
+ */
+
 public class RecentPostsTab extends Fragment  {
     Fragment MenuFragment = NavigationActivity.MenuFragment;
+
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     * This is the overriden method for the Recent post Fragment class used to
+     * create and returns the view hierarchy associated with the fragment.
+     * Creats the text views as well as paste exactly what it will contain.
+     * The purpose of this method in future will consist of the posts
+     * information, the number of likes it contains, and how many replys
+     * it has as well. The reply number will be added in future tests.
+     *
+     * Json formatting will also be done towards the bottom of the method. This will be
+     * used to send the data to the database, and if we want to parse it for reloading,
+     * we will have the JSON file formatted data to do so
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,7 +103,15 @@ public class RecentPostsTab extends Fragment  {
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-
+            /**
+             * This overriden method is a event that triggers an item click. Use
+             * this method to determine the action delt when a user clicks
+             * on a specific item
+             * @param parent
+             * @param v
+             * @param position
+             * @param id
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 

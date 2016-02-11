@@ -11,12 +11,36 @@ import android.widget.ArrayAdapter;
 import com.example.ruidong.sbu_application.R;
 
 /**
- * Created by shw on 11/17/2015.
+ *
+ * /**This class, is a custom list adapter for My posts. It extends
+ * ArrayAdapter of type posts because it will be stored in the
+ * ArrayAdapter, and we want to inherit its methods. It will store
+ * specifcally posts into the Array Adapter
+ *
+ *
+ *  EDIT this page is supposed to hold information relating to the user.
+ *  This includes all posts that the user has made, all posts that
+ *  the user has liked, and all posts that the user has commented on.
+ *
+ *  Stuff that will probably be included in this class will be
+ *  More tab hosts that will hold all the stuff that we will need.
+ *
+ *  Stuff to add can be mentioned here:
+ *
+ *  * Created by Albert and Sikho Wong on 11/18/2015.
  */
+
+
 public class MyStuffCustomListAdapter extends ArrayAdapter<String> {
     private final Activity context;
     private final String[] web;
 
+    /**
+     * Default constructor used to sett up the adapter of the
+     * My stuff page.
+     * @param context
+     * @param web
+     */
     public MyStuffCustomListAdapter(Activity context,String[] web) {
         super(context, R.layout.recent_post_listview, web);
         this.context = context;
@@ -24,6 +48,20 @@ public class MyStuffCustomListAdapter extends ArrayAdapter<String> {
 
 
     }
+
+    /**
+     * Overriden methoud used to get the exact view in the My Stuff list adapter.
+     * It also sets the position, likes, number and position of the post inside the
+     * list.
+     *
+     * There is also a method inside this method that represents an onClick listener.
+     * When a post is clicked, or the heart is clicked, it will increase the number of likes
+     * by 1.
+     * @param position
+     * @param view
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
