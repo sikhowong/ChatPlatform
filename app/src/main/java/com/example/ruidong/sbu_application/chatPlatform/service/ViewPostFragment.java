@@ -75,7 +75,7 @@ public class ViewPostFragment extends Fragment {
         TextView tv2 = (TextView)rootView.findViewById(R.id.textView8);
         TextView tv3 = (TextView)rootView.findViewById(R.id.textViewNum);
         tv1.setText(post.getContent());
-        tv2.setText(post.getDateCreated().toString() + " " + post.getMacAddress(getActivity()));
+        tv2.setText(post.getDate().toString());
         tv3.setText(post.getLikes()+"");
 
 

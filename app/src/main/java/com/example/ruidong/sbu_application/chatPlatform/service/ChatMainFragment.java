@@ -83,7 +83,7 @@ public class ChatMainFragment extends Fragment {
                 PopularPostsTab.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("fragmentd").setIndicator("My Stuff"),
                 MyStuffTab.class, null);
-
+        mTabHost.setCurrentTab(0);
 
         return rootView;
     }

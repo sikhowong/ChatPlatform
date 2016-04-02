@@ -1,5 +1,6 @@
 package com.example.ruidong.sbu_application.chatPlatform.service;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
@@ -12,6 +13,12 @@ import android.widget.Toast;
 
 import com.example.ruidong.sbu_application.R;
 import com.example.ruidong.sbu_application.framework.NavigationActivity;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  *  * Created by Albert and Sikho Wong on 11/18/2015.
@@ -62,9 +69,11 @@ public class NewPostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String content = et.getText().toString();
-                ChatMainFragment.postList.add(new Post(content, 0));
+                Post p = new Post(content,0,"", "");
+                ChatMainFragment.postList.add(p);
+                new HttpRequestTask().execute("http://130.245.191.166:8080/insertPost.php", content, p.getMacAddress(getActivity()));
 
-                Toast.makeText(getActivity(), "Post Submitted", Toast.LENGTH_SHORT).show();
+
             }
 
         });
@@ -74,4 +83,45 @@ public class NewPostFragment extends Fragment {
 
         return rootView;
     }
+
+
+
+
+
+    public class HttpRequestTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params){
+            try {
+                // open a connection to the site
+                URL url = new URL(params[0]);
+                URLConnection con = url.openConnection();
+                // activate the output
+                con.setDoOutput(true);
+                PrintStream ps = new PrintStream(con.getOutputStream());
+                // send your parameters to your site
+                ps.print("firstKey="+params[1] );
+                ps.print("&secondKey="+params[2]);
+                //ps.print("&thirdKey="+params[3]);
+
+                // we have to get the input stream in order to actually send the request
+                con.getInputStream();
+                //System.out.println("done");
+                // close the print stream
+                ps.close();
+                return "done";
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            super.onPostExecute(result);
+            Toast.makeText(getActivity(), "Post Submitted "+result, Toast.LENGTH_SHORT).show();
+        }
+    }
 }
+

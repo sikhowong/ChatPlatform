@@ -93,7 +93,7 @@ public class RecentPostCustomListAdapter extends ArrayAdapter<Post> {
         });
 
         holder.displayName.setText(posts.get(position).getContent());
-        holder.displayNumber.setText(posts.get(position).getDateCreated().toString());
+        holder.displayNumber.setText(posts.get(position).getDate().toString());
         holder.displayLikes.setText("Likes: " + posts.get(position).getLikes());
         return rowView;
     }

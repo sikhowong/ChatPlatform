@@ -3,6 +3,8 @@ package com.example.ruidong.sbu_application.chatPlatform.service;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 
+import com.example.ruidong.sbu_application.framework.NavigationActivity;
+
 import java.util.Date;
 
 /**
@@ -18,7 +20,7 @@ public class Post {
     private Date dateCreated;
     private String content;
     private int likes;
-
+    private String date ;
     /**
      * Defauct construction used in making a new post. sets the dateCreated to the
      * current date, the content C will be the content of the post, and the likes will
@@ -26,12 +28,16 @@ public class Post {
      * @param c
      * @param l
      */
-    public Post(String c , int l){
-        dateCreated = new Date();
+    public Post(String c , int like, String user, String d){
+        //dateCreated = new Date();
         content = c;
-        likes = l;
+        likes = like;
+        userID = user;
+        date = d;
     }
-
+    public String getDate(){
+        return date;
+    }
     /**
      * Method to return the date
      * @return
@@ -126,5 +132,6 @@ public class Post {
         }
         return macAddress;
     }
+
 
 }
