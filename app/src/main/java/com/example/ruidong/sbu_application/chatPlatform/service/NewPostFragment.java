@@ -69,7 +69,7 @@ public class NewPostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String content = et.getText().toString();
-                Post p = new Post(content,0,"", "");
+                Post p = new Post("",content,0,"", "");
                 ChatMainFragment.postList.add(p);
                 new HttpRequestTask().execute("http://130.245.191.166:8080/insertPost.php", content, p.getMacAddress(getActivity()));
 

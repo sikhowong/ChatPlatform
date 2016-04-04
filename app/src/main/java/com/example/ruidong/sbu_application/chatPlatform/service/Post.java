@@ -16,6 +16,7 @@ import java.util.Date;
 public class Post {
 
     private int postID;
+    private String id;
     private String userID;
     private Date dateCreated;
     private String content;
@@ -28,12 +29,17 @@ public class Post {
      * @param c
      * @param l
      */
-    public Post(String c , int like, String user, String d){
+    public Post(String id , String c , int like, String user, String d){
         //dateCreated = new Date();
-        content = c;
-        likes = like;
-        userID = user;
-        date = d;
+        this.id = id;
+        this.content = c;
+        this.likes = like;
+        this.userID = user;
+        this.date = d;
+    }
+
+    public String getID(){
+        return id;
     }
     public String getDate(){
         return date;

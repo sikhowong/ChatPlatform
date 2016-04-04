@@ -46,7 +46,8 @@ public class RecentPostsTab extends Fragment  {
     Fragment MenuFragment = NavigationActivity.MenuFragment;
     ArrayList<Post> posts = new ArrayList<Post>();
     RecentPostCustomListAdapter adapter;
-    ListView listView;
+
+    View V;
     /**
      *
      * @param inflater
@@ -68,7 +69,7 @@ public class RecentPostsTab extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View V = inflater.inflate(R.layout.fragment_recent_posts, container, false);
+        V = inflater.inflate(R.layout.fragment_recent_posts, container, false);
         String[] mobileArray = {"Android","IPhone","WindowsMobile","Blackberry","WebOS","Ubuntu","Windows7","Max OS X"};
 
 /*
@@ -111,55 +112,7 @@ public class RecentPostsTab extends Fragment  {
         }
 */
         new JSONHttpRequestTask().execute("http://130.245.191.166:8080/recentPost.php");
-        adapter = new RecentPostCustomListAdapter(getActivity(), posts);
 
-        //final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), ChatMainFragment.postList);
-        ListView listView = (ListView) V.findViewById(R.id.listView);
-        //ArrayAdapter<Post> adapter = new ArrayAdapter<Post>(getActivity(), R.layout.recent_post_listview, posts);
-        //View V2 = inflater.inflate(R.layout.recent_post_listview, container, false);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            /**
-             * This overriden method is a event that triggers an item click. Use
-             * this method to determine the action delt when a user clicks
-             * on a specific item
-             * @param parent
-             * @param v
-             * @param position
-             * @param id
-             */
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-                Post item = adapter.getItem(position);
-                Toast.makeText(getActivity(), "You Clicked at " + position + " " + item.getContent(), Toast.LENGTH_SHORT).show();
-
-                //new fragment to the view
-
-                if (MenuFragment != null) {
-                    FragmentTransaction tran7 = getActivity().getSupportFragmentManager().beginTransaction().remove(MenuFragment);
-                    tran7.commit();
-                }
-                if (!NavigationActivity.backButtonStack.isEmpty()) {
-                    FragmentTransaction tran = getActivity().getSupportFragmentManager().beginTransaction().remove(NavigationActivity.backButtonStack.peek().getFragment());
-                    tran.commit();
-                }
-                ViewPostFragment viewPostFragment = new ViewPostFragment();
-                viewPostFragment.setPost(item);
-
-                MenuFragment = viewPostFragment;
-                FragmentTransaction view_post_tran = getActivity().getSupportFragmentManager().beginTransaction().add(R.id.CourseHistory_container, MenuFragment);
-                FragmentIdPair newPostPair = new FragmentIdPair(MenuFragment, R.id.CourseHistory_container, 1);
-                NavigationActivity.backButtonStack.push(newPostPair);
-
-                view_post_tran.commit();
-
-
-            }
-
-
-        });
         //adapter.reload();
         return V;
     }
@@ -191,9 +144,9 @@ public class RecentPostsTab extends Fragment  {
                     for(int i=0 ; i< count; i++){   // iterate through jsonArray
                         JSONObject jsonObject = jsonArray.getJSONObject(i);  // get jsonObject @ i position
                         //System.out.println( jsonObject.getString("id") + " " + jsonObject.getString("name") + "  " + jsonObject.getString("age"));
-                          Log.w("myapp22", "jsonObject " + i + ": " + jsonObject.getString("Content") + "  " + jsonObject.getString("UserID"));
+                          Log.w("myapp22", "jsonObject " + i + ": " + jsonObject.getString("Content") + "  " + jsonObject.getString("UserID")+ " " + jsonObject.getString("id"));
                         //posts.add(new Post(jsonObject.getString("content"), jsonObject.getInt("likes")));
-                        posts.add(new Post(jsonObject.getString("Content"), jsonObject.getInt("Likes") , jsonObject.getString("UserID"), jsonObject.getString("DateCreated")));
+                        posts.add(new Post(jsonObject.getString("id"), jsonObject.getString("Content"), jsonObject.getInt("Likes") , jsonObject.getString("UserID"), jsonObject.getString("DateCreated")));
                     }
 
                 } catch (IOException ioe) {
@@ -228,7 +181,58 @@ public class RecentPostsTab extends Fragment  {
         protected void onPostExecute(String result){
            // super.onPostExecute(result);
             ///if(result.equals("done")){
-                adapter.reload();
+            adapter = new RecentPostCustomListAdapter(getActivity(), posts);
+
+            //final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), ChatMainFragment.postList);
+            ListView listView = (ListView) V.findViewById(R.id.listView);
+            //ArrayAdapter<Post> adapter = new ArrayAdapter<Post>(getActivity(), R.layout.recent_post_listview, posts);
+            //View V2 = inflater.inflate(R.layout.recent_post_listview, container, false);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                /**
+                 * This overriden method is a event that triggers an item click. Use
+                 * this method to determine the action delt when a user clicks
+                 * on a specific item
+                 * @param parent
+                 * @param v
+                 * @param position
+                 * @param id
+                 */
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                    Post item = adapter.getItem(position);
+                    Toast.makeText(getActivity(), "You Clicked at " + position + " " + item.getContent(), Toast.LENGTH_SHORT).show();
+
+                    //new fragment to the view
+
+                    if (MenuFragment != null) {
+                        FragmentTransaction tran7 = getActivity().getSupportFragmentManager().beginTransaction().remove(MenuFragment);
+                        tran7.commit();
+                    }
+                    if (!NavigationActivity.backButtonStack.isEmpty()) {
+                        FragmentTransaction tran = getActivity().getSupportFragmentManager().beginTransaction().remove(NavigationActivity.backButtonStack.peek().getFragment());
+                        tran.commit();
+                    }
+                    ViewPostFragment viewPostFragment = new ViewPostFragment();
+                    viewPostFragment.setPost(item);
+
+                    MenuFragment = viewPostFragment;
+                    FragmentTransaction view_post_tran = getActivity().getSupportFragmentManager().beginTransaction().add(R.id.CourseHistory_container, MenuFragment);
+                    FragmentIdPair newPostPair = new FragmentIdPair(MenuFragment, R.id.CourseHistory_container, 1);
+                    NavigationActivity.backButtonStack.push(newPostPair);
+
+                    view_post_tran.commit();
+
+
+                }
+
+
+            });
+
+                //adapter.reload();
+
             //}
               Toast.makeText(getActivity(), "Loaded ", Toast.LENGTH_SHORT).show();
         }

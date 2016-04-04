@@ -180,7 +180,7 @@ public class PopularPostsTab extends Fragment {
                         //System.out.println( jsonObject.getString("id") + " " + jsonObject.getString("name") + "  " + jsonObject.getString("age"));
                         Log.w("myapp22", "jsonObject " + i + ": " + jsonObject.getString("Content") + "  " + jsonObject.getString("UserID"));
                         //posts.add(new Post(jsonObject.getString("content"), jsonObject.getInt("likes")));
-                        posts.add(new Post(jsonObject.getString("Content"), jsonObject.getInt("Likes") , jsonObject.getString("UserID"), jsonObject.getString("DateCreated")));
+                        posts.add(new Post(jsonObject.getString("id"),jsonObject.getString("Content"), jsonObject.getInt("Likes") , jsonObject.getString("UserID"), jsonObject.getString("DateCreated")));
                     }
 
                 } catch (IOException ioe) {

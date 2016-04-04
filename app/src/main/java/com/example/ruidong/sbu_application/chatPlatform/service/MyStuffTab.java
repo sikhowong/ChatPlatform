@@ -83,7 +83,7 @@ public class MyStuffTab extends Fragment  {
         //final MyStuffCustomListAdapter adapter = new MyStuffCustomListAdapter(getActivity(), mobileArray);
         //TEMP
 
-        Post temp= new Post("",0,"","");
+        Post temp= new Post("","",0,"","");
         new JSONHttpRequestTask().execute("http://130.245.191.166:8080/myPost2.php?macAddr="+temp.getMacAddress(getActivity()));
         final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), posts);
         //remove
@@ -168,7 +168,7 @@ public class MyStuffTab extends Fragment  {
                         //System.out.println( jsonObject.getString("id") + " " + jsonObject.getString("name") + "  " + jsonObject.getString("age"));
                         Log.w("myapp22", "jsonObject " + i + ": " + jsonObject.getString("Content") + "  " + jsonObject.getString("UserID"));
                         //posts.add(new Post(jsonObject.getString("content"), jsonObject.getInt("likes")));
-                        posts.add(new Post(jsonObject.getString("Content"), jsonObject.getInt("Likes") , jsonObject.getString("UserID"), jsonObject.getString("DateCreated")));
+                        posts.add(new Post(jsonObject.getString("id"),jsonObject.getString("Content"), jsonObject.getInt("Likes") , jsonObject.getString("UserID"), jsonObject.getString("DateCreated")));
                     }
 
                 } catch (IOException ioe) {
