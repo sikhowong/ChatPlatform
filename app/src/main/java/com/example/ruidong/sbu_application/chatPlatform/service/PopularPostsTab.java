@@ -45,6 +45,7 @@ import static com.example.ruidong.sbu_application.R.layout.recent_post_listview;
 public class PopularPostsTab extends Fragment {
     Fragment MenuFragment = NavigationActivity.MenuFragment;
     ArrayList<Post> posts = new ArrayList<Post>();
+    View V;
     /**
      *
      * @param inflater
@@ -66,7 +67,7 @@ public class PopularPostsTab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View V = inflater.inflate(R.layout.fragment_popular_posts, container, false);
+        V = inflater.inflate(R.layout.fragment_popular_posts, container, false);
         String[] mobileArray = {"HEllow , school is mad work school is mad work school is mad work", "What's good people, school is mad work", "Who trynna get lunch?", "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X"};
         String jsonString = "";
 
@@ -107,45 +108,6 @@ public class PopularPostsTab extends Fragment {
         new JSONHttpRequestTask().execute("http://130.245.191.166:8080/popularPost.php");
         //final PopularPostCustomListAdapter adapter = new PopularPostCustomListAdapter(getActivity(), recent_post_listview, posts);
         //remove
-        final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), posts);
-
-        ListView listView = (ListView) V.findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-                Post item = adapter.getItem(position);
-                Toast.makeText(getActivity(), "You Clicked at " + position + " " + item.getContent(), Toast.LENGTH_SHORT).show();
-
-                //new fragment to the view
-
-                if (MenuFragment != null) {
-                    FragmentTransaction tran7 = getActivity().getSupportFragmentManager().beginTransaction().remove(MenuFragment);
-                    tran7.commit();
-                }
-                if (!NavigationActivity.backButtonStack.isEmpty()) {
-                    FragmentTransaction tran = getActivity().getSupportFragmentManager().beginTransaction().remove(NavigationActivity.backButtonStack.peek().getFragment());
-                    tran.commit();
-                }
-                ViewPostFragment viewPostFragment = new ViewPostFragment();
-                viewPostFragment.setPost(item);
-
-                MenuFragment = viewPostFragment;
-                FragmentTransaction view_post_tran = getActivity().getSupportFragmentManager().beginTransaction().add(R.id.CourseHistory_container, MenuFragment);
-                FragmentIdPair newPostPair = new FragmentIdPair(MenuFragment, R.id.CourseHistory_container, 1);
-                NavigationActivity.backButtonStack.push(newPostPair);
-
-                view_post_tran.commit();
-
-
-            }
-
-
-        });
 
 
         return V;
@@ -213,7 +175,47 @@ public class PopularPostsTab extends Fragment {
 
         @Override
         protected void onPostExecute(String result){
-            super.onPostExecute(result);
+          //  super.onPostExecute(result);
+            final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), posts);
+
+            ListView listView = (ListView) V.findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                    Post item = adapter.getItem(position);
+                    Toast.makeText(getActivity(), "You Clicked at " + position + " " + item.getContent(), Toast.LENGTH_SHORT).show();
+
+                    //new fragment to the view
+
+                    if (MenuFragment != null) {
+                        FragmentTransaction tran7 = getActivity().getSupportFragmentManager().beginTransaction().remove(MenuFragment);
+                        tran7.commit();
+                    }
+                    if (!NavigationActivity.backButtonStack.isEmpty()) {
+                        FragmentTransaction tran = getActivity().getSupportFragmentManager().beginTransaction().remove(NavigationActivity.backButtonStack.peek().getFragment());
+                        tran.commit();
+                    }
+                    ViewPostFragment viewPostFragment = new ViewPostFragment();
+                    viewPostFragment.setPost(item);
+
+                    MenuFragment = viewPostFragment;
+                    FragmentTransaction view_post_tran = getActivity().getSupportFragmentManager().beginTransaction().add(R.id.CourseHistory_container, MenuFragment);
+                    FragmentIdPair newPostPair = new FragmentIdPair(MenuFragment, R.id.CourseHistory_container, 1);
+                    NavigationActivity.backButtonStack.push(newPostPair);
+
+                    view_post_tran.commit();
+
+
+                }
+
+
+            });
+            Toast.makeText(getActivity(), "Loaded ", Toast.LENGTH_SHORT).show();
             //  Toast.makeText(getActivity(), "Post Submitted "+result, Toast.LENGTH_SHORT).show();
         }
     }

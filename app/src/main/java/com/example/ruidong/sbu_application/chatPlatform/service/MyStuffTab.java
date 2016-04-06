@@ -35,6 +35,7 @@ import java.util.ArrayList;
 public class MyStuffTab extends Fragment  {
     Fragment MenuFragment = NavigationActivity.MenuFragment;
     ArrayList<Post> posts = new ArrayList<Post>();
+    View V;
     /**
      * This is the overriden method for the My Stuff Tab Fragment class used to create
      * the text views as well as paste exactly what it will contain. The purpose of this
@@ -54,7 +55,7 @@ public class MyStuffTab extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View V = inflater.inflate(R.layout.fragment_my_stuff, container, false);
+        V = inflater.inflate(R.layout.fragment_my_stuff, container, false);
         String[] mobileArray = {"These are my post let's check it out !!!!!!!!!!!! ! !!!  !!!!! haha","More of my post , these are great, look at my likes ","Who trynna get lunch?","Blackberry","These are my post let's check it out !!!!!!!!!!!! ! !!!  !!!!! haha","More of my post , these are great, look at my likes ","Who trynna get lunch?","Blackberry","These are my post let's check it out !!!!!!!!!!!! ! !!!  !!!!! haha","More of my post , these are great, look at my likes ","Who trynna get lunch?","Blackberry","WebOS","Ubuntu","Windows7","Max OS X"};
 
 
@@ -84,56 +85,8 @@ public class MyStuffTab extends Fragment  {
         //TEMP
 
         Post temp= new Post("","",0,"","");
-        new JSONHttpRequestTask().execute("http://130.245.191.166:8080/myPost2.php?macAddr="+temp.getMacAddress(getActivity()));
-        final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), posts);
-        //remove
-        //final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), ChatMainFragment.postList);
-        ListView listView = (ListView) V.findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        new JSONHttpRequestTask().execute("http://130.245.191.166:8080/myPost2.php?macAddr=" + temp.getMacAddress(getActivity()));
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            /**
-             * Also contains an onItemClick listener used to add an action
-             * to when the post is clicked. Currently it shows the specific post
-             * that we click, however, what is meant to happen, is open up all
-             * the comments and replies that are associated with that post.
-             * @param parent
-             * @param v
-             * @param position
-             * @param id
-             */
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-                Post item = adapter.getItem(position);
-                Toast.makeText(getActivity(), "You Clicked at " + position + " " + item.getContent(), Toast.LENGTH_SHORT).show();
-
-                //new fragment to the view
-
-                if (MenuFragment != null) {
-                    FragmentTransaction tran7 = getActivity().getSupportFragmentManager().beginTransaction().remove(MenuFragment);
-                    tran7.commit();
-                }
-                if (!NavigationActivity.backButtonStack.isEmpty()) {
-                    FragmentTransaction tran = getActivity().getSupportFragmentManager().beginTransaction().remove(NavigationActivity.backButtonStack.peek().getFragment());
-                    tran.commit();
-                }
-                ViewPostFragment viewPostFragment = new ViewPostFragment();
-                viewPostFragment.setPost(item);
-
-                MenuFragment = viewPostFragment;
-                FragmentTransaction view_post_tran = getActivity().getSupportFragmentManager().beginTransaction().add(R.id.CourseHistory_container, MenuFragment);
-                FragmentIdPair newPostPair = new FragmentIdPair(MenuFragment, R.id.CourseHistory_container, 1);
-                NavigationActivity.backButtonStack.push(newPostPair);
-
-                view_post_tran.commit();
-
-
-            }
-
-
-        });
         return V;
     }
 
@@ -201,8 +154,58 @@ public class MyStuffTab extends Fragment  {
 
         @Override
         protected void onPostExecute(String result){
-            super.onPostExecute(result);
+           // super.onPostExecute(result);
             //  Toast.makeText(getActivity(), "Post Submitted "+result, Toast.LENGTH_SHORT).show();
+            final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), posts);
+            //remove
+            //final RecentPostCustomListAdapter adapter = new RecentPostCustomListAdapter(getActivity(), ChatMainFragment.postList);
+            ListView listView = (ListView) V.findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                /**
+                 * Also contains an onItemClick listener used to add an action
+                 * to when the post is clicked. Currently it shows the specific post
+                 * that we click, however, what is meant to happen, is open up all
+                 * the comments and replies that are associated with that post.
+                 * @param parent
+                 * @param v
+                 * @param position
+                 * @param id
+                 */
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                    Post item = adapter.getItem(position);
+                    Toast.makeText(getActivity(), "You Clicked at " + position + " " + item.getContent(), Toast.LENGTH_SHORT).show();
+
+                    //new fragment to the view
+
+                    if (MenuFragment != null) {
+                        FragmentTransaction tran7 = getActivity().getSupportFragmentManager().beginTransaction().remove(MenuFragment);
+                        tran7.commit();
+                    }
+                    if (!NavigationActivity.backButtonStack.isEmpty()) {
+                        FragmentTransaction tran = getActivity().getSupportFragmentManager().beginTransaction().remove(NavigationActivity.backButtonStack.peek().getFragment());
+                        tran.commit();
+                    }
+                    ViewPostFragment viewPostFragment = new ViewPostFragment();
+                    viewPostFragment.setPost(item);
+
+                    MenuFragment = viewPostFragment;
+                    FragmentTransaction view_post_tran = getActivity().getSupportFragmentManager().beginTransaction().add(R.id.CourseHistory_container, MenuFragment);
+                    FragmentIdPair newPostPair = new FragmentIdPair(MenuFragment, R.id.CourseHistory_container, 1);
+                    NavigationActivity.backButtonStack.push(newPostPair);
+
+                    view_post_tran.commit();
+
+
+                }
+
+
+            });
+            Toast.makeText(getActivity(), "Loaded ", Toast.LENGTH_SHORT).show();
         }
     }
 }

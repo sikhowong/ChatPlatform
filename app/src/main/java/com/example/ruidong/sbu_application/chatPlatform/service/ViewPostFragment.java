@@ -183,4 +183,10 @@ public class ViewPostFragment extends Fragment {
     public void setPost(Post p){
         post = p;
     }
+
+
+
+
+
+
 }
