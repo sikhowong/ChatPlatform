@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,6 +24,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import static com.example.ruidong.sbu_application.R.layout.recent_post_listview;
@@ -35,7 +44,8 @@ import static com.example.ruidong.sbu_application.R.layout.recent_post_listview;
 public class ViewPostFragment extends Fragment {
     Post post;
     EditText inputComment ;
-
+    ArrayList<Comment> comments = new ArrayList<>();
+    View rootView;
     public ViewPostFragment(){
 
     }
@@ -70,7 +80,7 @@ public class ViewPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup containter, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        final View rootView = inflater.inflate(R.layout.fragment_view_post, containter, false);
+        rootView = inflater.inflate(R.layout.fragment_view_post, containter, false);
         TextView tv1 = (TextView)rootView.findViewById(R.id.textView7);
         TextView tv2 = (TextView)rootView.findViewById(R.id.textView8);
         TextView tv3 = (TextView)rootView.findViewById(R.id.textViewNum);
@@ -89,14 +99,17 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String txt = inputComment.getText().toString();
-                Comment c = new Comment(txt , 0);
+                Comment c = new Comment("", txt,0,"", "", "");
                 if (ChatMainFragment.commentHashTable.containsKey(post.getContent())){
                     ChatMainFragment.commentHashTable.get(post.getContent()).add(c);
                 }else{
                     ChatMainFragment.commentHashTable.put(post.getContent(), new ArrayList<Comment>());
                     ChatMainFragment.commentHashTable.get(post.getContent()).add(c);
                 }
-                reload(rootView);
+
+                new InsertCommentHttpRequestTask().execute("http://130.245.191.166:8080/insertComment.php", txt, post.getID(),c.getMacAddress(getActivity()));
+                new LoadCommentHttpRequestTask().execute("http://130.245.191.166:8080/getComments.php", post.getID());
+    //            reload(rootView);
 
 
 
@@ -129,7 +142,7 @@ public class ViewPostFragment extends Fragment {
 
         });
         */
-
+/*
         ArrayList<Comment> comments = new ArrayList<>();
 
         try {
@@ -146,16 +159,17 @@ public class ViewPostFragment extends Fragment {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);  // get jsonObject @ i position
                 System.out.println("jsonObject " + i + ": " + jsonObject.getString("content") + "  " + jsonObject.getString("dateCreated"));
                 //Log.w("myapp", "jsonObject " + i + ": " + jsonObject.getString("content") + "  " + jsonObject.getString("dateCreated"));
-                comments.add(new Comment(jsonObject.getString("content"), jsonObject.getInt("likes")));
+                //comments.add(new Comment(jsonObject.getString("content"), jsonObject.getInt("likes")));
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+*/
 
         // new for showing
-        reload(rootView);
+        new LoadCommentHttpRequestTask().execute("http://130.245.191.166:8080/getComments.php", post.getID());
+
 
 
 
@@ -163,8 +177,8 @@ public class ViewPostFragment extends Fragment {
         return rootView;
     }
     public void reload(View rootView){
-        ArrayList<Comment> comments = new ArrayList<>();
-        comments = ChatMainFragment.commentHashTable.get(post.getContent());
+      //  ArrayList<Comment> comments = new ArrayList<>();
+        //comments = ChatMainFragment.commentHashTable.get(post.getContent());
         if(comments != null){
             final CommentsCustomListAdapter adapter = new CommentsCustomListAdapter(getActivity(), recent_post_listview, comments);
             ListView listView = (ListView) rootView.findViewById(R.id.listView);
@@ -185,8 +199,100 @@ public class ViewPostFragment extends Fragment {
     }
 
 
+    public class InsertCommentHttpRequestTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params){
+            try {
+                // open a connection to the site
+                URL url = new URL(params[0]);
+                URLConnection con = url.openConnection();
+                // activate the output
+                con.setDoOutput(true);
+                PrintStream ps = new PrintStream(con.getOutputStream());
+                // send your parameters to your site
+                ps.print("content="+params[1] );
+                ps.print("&postid="+params[2]);
+                ps.print("&mac="+params[3]);
+                //ps.print("&thirdKey="+params[3]);
+
+                // we have to get the input stream in order to actually send the request
+                con.getInputStream();
+                //System.out.println("done");
+                // close the print stream
+                ps.close();
+                return "done";
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            super.onPostExecute(result);
+            Toast.makeText(getActivity(), "Post Submitted "+result, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public class LoadCommentHttpRequestTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params){
+            try {
+                // open a connection to the site
+                URL url = new URL(params[0]);
+                URLConnection con = url.openConnection();
+                // activate the output
+                con.setDoOutput(true);
+                PrintStream ps = new PrintStream(con.getOutputStream());
+                ps.print("postid="+params[1] );
 
 
+                // we have to get the input stream in order to actually send the request
+                InputStream is = con.getInputStream();
 
+                String readLine;
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String jstring = "";
+                while (((readLine = br.readLine()) != null)) {
+                    //System.out.println(readLine);
+                    Log.w("myapp44", readLine);
+                  /*  if(!readLine.equals("matched")){
+                        //posts.get(Integer.parseInt(params[3])).setLikes(posts.get(Integer.parseInt(params[3])).getLikes() + 1);
+                    }*/
+                    jstring += readLine;
+
+
+                }
+
+                JSONArray jsonArray = new JSONArray(jstring);
+                int count = jsonArray.length(); // get totalCount of all jsonObjects
+                comments = new ArrayList<Comment>();
+                for(int i=0 ; i< count; i++){   // iterate through jsonArray
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);  // get jsonObject @ i position
+                    //System.out.println( jsonObject.getString("id") + " " + jsonObject.getString("name") + "  " + jsonObject.getString("age"));
+                    Log.w("comment22", "comment jsonObject " + i + ": " + jsonObject.getString("PostID") + "  " + jsonObject.getString("Content") + "  " + jsonObject.getString("UserID")+ " " + jsonObject.getString("id"));
+                    //posts.add(new Post(jsonObject.getString("content"), jsonObject.getInt("likes")));
+                    comments.add(new Comment(jsonObject.getString("id"), jsonObject.getString("Content"), jsonObject.getInt("Likes"), jsonObject.getString("UserID"), jsonObject.getString("DateCreated"), jsonObject.getString("PostID")));
+                }
+
+                ps.close();
+                return "done";
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            reload(rootView);
+        }
+    }
 
 }

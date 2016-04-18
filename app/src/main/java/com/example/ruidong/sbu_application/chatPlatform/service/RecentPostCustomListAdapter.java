@@ -175,6 +175,7 @@ public class RecentPostCustomListAdapter extends ArrayAdapter<Post> {
         protected void onPostExecute(String result){
             super.onPostExecute(result);
            // Toast.makeText(getActivity(), "Post Submitted "+result, Toast.LENGTH_SHORT).show();
+
         }
     }
 

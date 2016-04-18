@@ -2,6 +2,8 @@ package com.example.ruidong.sbu_application.chatPlatform.service;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,14 @@ import android.widget.TextView;
 
 import com.example.ruidong.sbu_application.R;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -89,7 +99,9 @@ public class CommentsCustomListAdapter extends ArrayAdapter<Comment> {
             public void onClick(View v) {
                 // Toast.makeText(activity, "You Clicked at " + p, Toast.LENGTH_SHORT).show();
 
-                comments.get(p).setLikes(comments.get(p).getLikes()+1);
+                //comments.get(p).setLikes(comments.get(p).getLikes() + 1);
+
+                new UpdateCommentLikeHttpRequestTask().execute("http://130.245.191.166:8080/updateCommentLikes.php", comments.get(p).getMacAddress(activity) , comments.get(p).getID(), p+"");
                 reload();
             }
         });
@@ -108,7 +120,7 @@ public class CommentsCustomListAdapter extends ArrayAdapter<Comment> {
 //            }
 //        });
         holder.displayName.setText(comments.get(position).getContent());
-        holder.displayNumber.setText(comments.get(position).getDateCreated().toString());
+        holder.displayNumber.setText(comments.get(position).getDate());
         holder.displayLikes.setText("Likes: " + comments.get(position).getLikes());
         return rowView;
     }
@@ -120,4 +132,58 @@ public class CommentsCustomListAdapter extends ArrayAdapter<Comment> {
 
         return posts.get(position);
     }*/
+
+
+
+    public class UpdateCommentLikeHttpRequestTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params){
+            try {
+                // open a connection to the site
+                URL url = new URL(params[0]);
+                URLConnection con = url.openConnection();
+                // activate the output
+                con.setDoOutput(true);
+                PrintStream ps = new PrintStream(con.getOutputStream());
+                // send your parameters to your site
+                ps.print("mac="+params[1] );
+                ps.print("&commentid="+params[2]);
+                //ps.print("&thirdKey="+params[3]);
+
+                // we have to get the input stream in order to actually send the request
+                InputStream is = con.getInputStream();
+                //
+                // is = httpConn.getErrorStream();
+                String readLine;
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+                //while (((readLine = br.readLine()) != null)) {
+                    //System.out.println(readLine);
+                    readLine = br.readLine();
+                    Log.w("readMatch", readLine);
+                    if(!readLine.contains("matched")){
+                        comments.get(Integer.parseInt(params[3])).setLikes(comments.get(Integer.parseInt(params[3])).getLikes() + 1);
+                    }
+
+                //}
+                // Log.w("myapp44", con.getInputStream().toString());
+                //System.out.println("done");
+                // close the print stream
+                ps.close();
+                return "done";
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            super.onPostExecute(result);
+            // Toast.makeText(getActivity(), "Post Submitted "+result, Toast.LENGTH_SHORT).show();
+            reload();
+        }
+    }
 }

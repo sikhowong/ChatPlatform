@@ -15,12 +15,13 @@ import java.util.Date;
 public class Comment {
 
     //The data fields associated with a Comment
-    private int postID;
+    private String postID;
     private String userID;
     private Date dateCreated;
     private String content;
     private int likes;
-
+    private String id ;
+    private String date;
     /**
      * Constructor for making a comment. When a user clicks on a post, they
      * can decide to comment. When doing that, this constructor will be called
@@ -29,12 +30,21 @@ public class Comment {
      * @param c
      * @param l
      */
-    public Comment(String c , int l){
-        dateCreated = new Date();
-        content = c;
-        likes = l;
+    public Comment(String id , String c , int like, String user, String d, String postID){
+        //dateCreated = new Date();
+        this.postID = postID;
+        this.id = id;
+        this.content = c;
+        this.likes = like;
+        this.userID = user;
+        this.date = d;
     }
-
+    public String getID(){
+        return id;
+    }
+    public String getDate(){
+        return date;
+    }
     /**
      * Method to return the date
      * @return
@@ -55,7 +65,7 @@ public class Comment {
      * Method to return the postID
      * @return
      */
-    public int getPostID() {
+    public String getPostID() {
         return postID;
     }
 
@@ -103,7 +113,7 @@ public class Comment {
      * Method to set the ID of the post to postID
      * @param postID
      */
-    public void setPostID(int postID) {
+    public void setPostID(String postID) {
         this.postID = postID;
     }
 
@@ -115,14 +125,14 @@ public class Comment {
         this.userID = userID;
     }
 
-  /*  public String getMacAddress(Context context) {
+    public String getMacAddress(Context context) {
         WifiManager wimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         String macAddress = wimanager.getConnectionInfo().getMacAddress();
         if (macAddress == null) {
             macAddress = "Device don't have mac address or wi-fi is disabled";
         }
         return macAddress;
-    }*/
+    }
 
 
 
